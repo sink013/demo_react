@@ -4,6 +4,7 @@ import LeftMenu from "../components/LeftMenu";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Button, Layout, theme, Row, Col } from "antd";
 import BreadBar from "../components/BreadBar";
+import TagsNav from "../components/TagsNav";
 const { Header, Sider, Content } = Layout;
 const MainLayout = () => {
   const [collapsedWidth, setCollapsedWidth] = useState(80);
@@ -70,6 +71,9 @@ const MainLayout = () => {
             borderRadius: borderRadiusLG,
           }}
         >
+          <Row>
+            <TagsNav />
+          </Row>
           <Outlet />
         </Content>
       </Layout>
