@@ -2,6 +2,7 @@ const initialState = [];
 
 const tagsNav = (state = initialState, { type, payload }) => {
   switch (type) {
+    case 'clear_tags': return initialState
     case "del_tag": {
       let newTags = [...state];
       newTags.splice(payload, 1);

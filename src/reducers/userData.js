@@ -5,6 +5,9 @@ const initialState = {
 };
 const userData = (state = initialState, { type, payload }) => {
   switch (type) {
+    case "clear_userData": {
+      return initialState;
+    }
     case "set_userData": {
       return payload;
     }
