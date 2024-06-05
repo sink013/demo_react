@@ -5,6 +5,7 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Button, Layout, theme, Row, Col } from "antd";
 import BreadBar from "../components/BreadBar";
 import TagsNav from "../components/TagsNav";
+import Logout from "../components/Logout";
 const { Header, Sider, Content } = Layout;
 const MainLayout = () => {
   const [collapsedWidth, setCollapsedWidth] = useState(80);
@@ -59,6 +60,9 @@ const MainLayout = () => {
             </Col>
             <Col span={18}>
               <BreadBar />
+            </Col>
+            <Col span={3}>
+              <Logout />
             </Col>
           </Row>
         </Header>

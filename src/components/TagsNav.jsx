@@ -25,6 +25,22 @@ const TagsNav = () => {
           onClick={() => {
             navigate(v.path);
           }}
+          closable={tagsNav.length > 1}
+          onClose={(e) => {
+            e.preventDefault();
+            dispatch({ type: "del_tag", payload: i });
+            if (tagsNav.length === 1) {
+              navigate("/admin/index");
+              return;
+            }
+            if (v.path === pathname) {
+              let targetIndex = i - 1;
+              if (targetIndex < 0) {
+                targetIndex = i + 1;
+              }
+              navigate(tagsNav[targetIndex].path);
+            }
+          }}
         >
           {v.title}
         </Tag>
