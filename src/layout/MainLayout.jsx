@@ -58,10 +58,10 @@ const MainLayout = () => {
                 }}
               />
             </Col>
-            <Col span={18}>
+            <Col span={16}>
               <BreadBar />
             </Col>
-            <Col span={3}>
+            <Col span={5}>
               <Logout />
             </Col>
           </Row>
