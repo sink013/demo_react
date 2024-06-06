@@ -1,10 +1,11 @@
 import { Button, Upload, message } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import Cookies from "js-cookie";
 
 // import { useNavigate } from "react-router-dom";
 // import qs from "qs";
 const ProductList = () => {
+  const [imageUrl, setImageUrl] = useState("");
   // const navigate = useNavigate();
   const beforeUpload = (file) => {
     console.log(file);
@@ -22,11 +23,14 @@ const ProductList = () => {
     if (file.status === "done") {
       console.log(file.response.data.src);
       message.success("Uploaded successfully");
+      setImageUrl(file.response.data.src);
     }
   };
   return (
     <div>
       <Upload
+        listType="picture-card"
+        showUploadList={false}
         action="http://62.234.30.177/adminapi/file/upload"
         headers={{
           "Authori-Zation": "Bearer " + Cookies.get("token"),
@@ -36,7 +40,17 @@ const ProductList = () => {
         onChange={changeFn}
         beforeUpload={beforeUpload}
       >
-        上传图片
+        {imageUrl ? (
+          <img
+            src={"http://62.234.30.177/" + imageUrl}
+            alt=""
+            style={{
+              width: "100%",
+            }}
+          />
+        ) : (
+          <div>+上传</div>
+        )}
       </Upload>
       {/* <Button
         type="primary"
