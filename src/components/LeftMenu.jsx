@@ -55,7 +55,7 @@ const LeftMenu = () => {
         openKeys={openKeys}
         items={items}
         onOpenChange={(keys) => {
-          console.log(keys);
+          // console.log(keys);
           setOpenKeys(keys);
         }}
       />
