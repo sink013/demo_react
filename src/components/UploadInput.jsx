@@ -65,7 +65,7 @@ const UploadInput = ({ value, onChange }) => {
       >
         {value ? (
           <img
-            src={"http://62.234.30.177/" + value}
+            src={value}
             alt=""
             style={{
               width: "90%",
