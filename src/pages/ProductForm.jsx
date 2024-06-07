@@ -8,6 +8,7 @@ import CheckInput from "../components/CheckInput";
 import RadioInput from "../components/RadioInput";
 import DateInput from "../components/DateInput";
 import SwitchInput from "../components/SwitchInput";
+import UploadInput from "../components/UploadInput";
 
 const ProductForm = () => {
   const { search, hash, state } = useLocation();
@@ -61,6 +62,9 @@ const ProductForm = () => {
         {/* Switch开关 */}
         <Form.Item name="status" initialValue={"0"}>
           <SwitchInput />
+        </Form.Item>
+        <Form.Item name="img">
+          <UploadInput />
         </Form.Item>
         <Form.Item>
           <Button htmlType="submit">提交</Button>

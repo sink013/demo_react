@@ -1,8 +1,8 @@
-import axios from "axios";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import axios from "../utils/request";
+import Cookies from "js-cookie";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -12,8 +12,10 @@ const Login = () => {
       data: { account: "admin", pwd: "admin123" },
       url: "http://62.234.30.177/adminapi/login",
     }).then((res) => {
-      if (res.data.status === 200) {
-        dispatch({ type: "set_userData", payload: res.data.data });
+      console.log(res);
+      if (res.status === 200) {
+        Cookies.set("token", res.data.token);
+        dispatch({ type: "set_userData", payload: res.data });
         navigate("/admin/index");
       }
     });
