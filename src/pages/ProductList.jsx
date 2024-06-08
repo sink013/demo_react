@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useMemo, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../utils/request";
 import {
   Button,
   Form,
   Input,
-  message,
   Modal,
   Space,
   Switch,
   Table,
+  Tag,
+  message,
 } from "antd";
 import UploadInput from "../components/UploadInput";
-
+import qs from "qs";
 const defaultData = {
   logistics: ["1"],
   freight: 2,
@@ -56,10 +57,24 @@ const ProductList = () => {
   const [data, setData] = useState([]);
   const [formData] = Form.useForm();
   const [modalOpen, setModalOpen] = useState(false);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [total, setTotal] = useState(0);
   const navigate = useNavigate();
+  const { search } = useLocation();
+  const { page, pageSize } = useMemo(() => {
+    let page = 1,
+      pageSize = 10;
+    if (search) {
+      let obj = qs.parse(search.substring(1));
+      page = obj.page;
+      pageSize = obj.pageSize;
+    }
+    return { page, pageSize };
+  }, [search]);
   useEffect(() => {
     getData();
-  }, []);
+  }, [page, pageSize]);
   const getData = () => {
     axios({
       method: "GET",
@@ -68,13 +83,14 @@ const ProductList = () => {
         store_name: "",
         type: 1,
         cate_id: "",
-        limit: 15,
-        page: 1,
+        limit: pageSize,
+        page: page,
       },
     })
       .then((res) => {
         // console.log(res.data);
         if (res.status === 200) {
+          setTotal(res.data.count);
           setData(res.data.list);
         }
       })
@@ -161,8 +177,84 @@ const ProductList = () => {
         >
           添加
         </Button>
+        <Button
+          onClick={() => {
+            axios({
+              method: "PUT",
+              url: "http://62.234.30.177/adminapi/product/product/product_unshow",
+              data: { ids: selectedRowKeys },
+            })
+              .then((res) => {
+                console.log(res);
+                if (res.status === 200) {
+                  getData();
+                  message.success("下架成功");
+                }
+              })
+              .catch((err) => console.log(err));
+          }}
+        >
+          批量下架
+        </Button>
       </div>
-      <Table columns={columns} dataSource={data} rowKey={"id"} />
+      <div>
+        {selectedRows.map((v, i) => (
+          <Tag
+            key={v.id}
+            closable
+            onClose={(e) => {
+              e.preventDefault();
+              let index = i;
+              let rows = [...selectedRows];
+              let rowKeys = [...selectedRowKeys];
+              rows.splice(index, 1);
+              rowKeys.splice(index, 1);
+              setSelectedRows(rows);
+              setSelectedRowKeys(rowKeys);
+            }}
+          >
+            {v.store_name}
+          </Tag>
+        ))}
+      </div>
+      <Table
+        columns={columns}
+        dataSource={data}
+        rowKey={"id"}
+        rowSelection={{
+          getCheckboxProps: (record) => {
+            return {
+              disabled:
+                !selectedRowKeys.includes(record.id) &&
+                selectedRowKeys.length > 2,
+            };
+          },
+          selectedRowKeys: selectedRowKeys,
+          onChange: (selectedRowKeys, selectedRows) => {
+            // console.log(selectedRowKeys, selectedRows);
+            if (selectedRowKeys.length > 2) {
+              selectedRows = selectedRows.slice(0, 3);
+              selectedRowKeys = selectedRows.slice(0, 3);
+            }
+            setSelectedRows(selectedRows);
+            setSelectedRowKeys(selectedRowKeys);
+          },
+        }}
+        pagination={{
+          showTotal: (total) => `总条数${total}`,
+          showQuickJumper: true,
+          pageSizeOptions: [5, 10, 15, 20],
+          current: +page,
+          pageSize: +pageSize,
+          total: total,
+          onChange: (page, pageSize) => {
+            console.log(page, pageSize);
+            navigate({
+              search: qs.stringify({ page, pageSize }),
+            });
+          },
+        }}
+      />
       <Modal
         open={modalOpen}
         okText="确认"
