@@ -10,7 +10,7 @@ const Login = lazy(() => import("./pages/Login"));
 
 function App() {
   return (
-    <ErrorBoundary fallback={<p>Something went wrong</p>}>
+    <ErrorBoundary fallback={<p>出错了，请刷新重试或更换浏览器</p>}>
       <Suspense fallback={<h3>加载中...</h3>}>
         <Routes>
           <Route path="/login" element={<Login />} />
