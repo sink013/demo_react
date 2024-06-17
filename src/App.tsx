@@ -2,10 +2,11 @@ import React, { lazy, Suspense } from "react";
 import "./App.css";
 import ErrorBoundary from "./ErrorBoundary";
 import { Navigate, Route, Routes } from "react-router-dom";
-import Login from "./pages/Login";
+// import Login from "./pages/Login";
 import MainLayout from "./layout/MainLayout";
 // import UserLevel from "./pages/UserLevel";
 const UserLevel = lazy(() => import("./pages/UserLevel"));
+const Login = lazy(() => import("./pages/Login"));
 
 function App() {
   return (
