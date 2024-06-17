@@ -25,11 +25,12 @@ const TagsNav = () => {
           closable
           onClose={(e) => {
             e.preventDefault();
-            dispatch({ type: "delete", payload: i });
-            if (tagsNav.length === 1) {
+             if (tagsNav.length === 1) {
               console.log(tagsNav.length);
               navigate("/admin/index");
             }
+            dispatch({ type: "delete", payload: i });
+           
             if (v.path === pathname) {
               let targetIndex = i - 1;
               if (targetIndex < 0) {

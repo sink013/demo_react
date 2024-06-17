@@ -38,7 +38,8 @@ instance.interceptors.response.use(
     // code:  "ECONNABORTED"
     // message: "timeout of 1000ms exceeded"
     if (err.code === "ECONNABORTED" && err.message.includes("timeout")) {
-      let count = 3;
+      // let count = 3;
+      
       // return err.config
     }
     return Promise.reject(err);
